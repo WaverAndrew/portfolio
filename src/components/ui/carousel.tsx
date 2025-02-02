@@ -10,6 +10,7 @@ import {
   IconArrowNarrowLeft,
   IconArrowNarrowRight,
   IconX,
+  IconBulb,
 } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
@@ -20,6 +21,11 @@ interface CarouselProps {
   items: React.ReactElement[];
   initialScroll?: number;
 }
+
+type BackgroundStyle = {
+  className: string;
+  modalClassName: string;
+};
 
 type Card = {
   title: string;
@@ -162,7 +168,12 @@ export const Card = ({
   index,
   layout = false,
 }: {
-  card: Card;
+  card: Card & {
+    problems?: string[];
+    learnings?: string[];
+    achievements?: { value: string; label: string }[];
+    media?: { type: "image" | "video"; url: string }[];
+  };
   index: number;
   layout?: boolean;
 }) => {
@@ -208,7 +219,7 @@ export const Card = ({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="bg-black/80 backdrop-blur-lg h-full w-full fixed inset-0"
+              className="bg-neutral-500/40 backdrop-blur-xl h-full w-full fixed inset-0"
             />
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -219,34 +230,159 @@ export const Card = ({
                 ease: "easeInOut",
               }}
               ref={containerRef}
-              className="max-w-5xl mx-auto bg-white dark:bg-neutral-900 h-fit z-[60] my-10 p-4 md:p-10 rounded-3xl font-sans relative"
+              className="max-w-5xl mx-auto bg-neutral-400/30 dark:bg-neutral-700/30 backdrop-blur-xl border border-neutral-300/20 h-fit z-[60] my-10 p-4 md:p-10 rounded-3xl font-sans relative"
             >
               <button
-                className="sticky top-4 h-8 w-8 right-0 ml-auto bg-black dark:bg-white rounded-full flex items-center justify-center"
+                className="sticky top-4 h-8 w-8 right-0 ml-auto bg-black/20 backdrop-blur-lg dark:bg-white/20 rounded-full flex items-center justify-center"
                 onClick={handleClose}
               >
-                <IconX className="h-6 w-6 text-neutral-100 dark:text-neutral-900" />
+                <IconX className="h-6 w-6 text-neutral-100 dark:text-neutral-100" />
               </button>
-              <motion.p
-                layoutId={layout ? `category-${card.title}` : undefined}
-                className="text-base font-medium text-black dark:text-white"
-              >
-                {card.category}
-              </motion.p>
-              <motion.p
-                layoutId={layout ? `title-${card.title}` : undefined}
-                className="text-2xl md:text-5xl font-semibold text-neutral-700 mt-4 dark:text-white"
-              >
-                {card.title}
-              </motion.p>
-              <div className="py-10">{card.content}</div>
+
+              {/* Header Section */}
+              <div className="space-y-4">
+                <motion.p
+                  layoutId={layout ? `category-${card.title}` : undefined}
+                  className="text-base font-medium text-white/80"
+                >
+                  {card.category}
+                </motion.p>
+                <motion.p
+                  layoutId={layout ? `title-${card.title}` : undefined}
+                  className="text-2xl md:text-5xl font-semibold text-white mt-4"
+                >
+                  {card.title}
+                </motion.p>
+              </div>
+
+              {/* Media Section */}
+              {card.media && (
+                <div className="mt-8 grid grid-cols-2 gap-4">
+                  {card.media.map((item, i) =>
+                    item.type === "image" ? (
+                      <div key={i} className="rounded-xl aspect-video relative">
+                        <BlurImage
+                          src={item.url}
+                          alt={`${card.title} preview ${i + 1}`}
+                          fill
+                          className="rounded-xl object-cover"
+                        />
+                      </div>
+                    ) : (
+                      <div key={i} className="rounded-xl aspect-video relative">
+                        {item.url.includes("drive.google.com") ? (
+                          <iframe
+                            src={getGoogleDriveEmbedUrl(item.url)}
+                            className="absolute inset-0 w-full h-full"
+                            allow="autoplay"
+                            allowFullScreen
+                          />
+                        ) : (
+                          <video
+                            src={item.url}
+                            className="absolute inset-0 w-full h-full object-cover"
+                            controls
+                          />
+                        )}
+                      </div>
+                    )
+                  )}
+                </div>
+              )}
+
+              {/* Description */}
+              <div className="mt-8 text-white/80">
+                <p className="text-lg leading-relaxed">{card.description}</p>
+              </div>
+
+              {/* Problems & Learnings Grid */}
+              <div className="mt-8 grid md:grid-cols-2 gap-6">
+                {/* Problems */}
+                <div className="p-6 rounded-xl bg-red-500/10 backdrop-blur-lg border border-red-500/20">
+                  <h3 className="text-xl font-semibold text-red-500 mb-4 flex items-center gap-2">
+                    <IconX className="h-5 w-5" /> Problems Tackled
+                  </h3>
+                  <ul className="space-y-2">
+                    {card.problems?.map((problem, i) => (
+                      <li
+                        key={i}
+                        className="text-white/80 flex items-start gap-2"
+                      >
+                        <span className="text-red-500/80 mt-1">×</span>
+                        {problem}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Learnings */}
+                <div className="p-6 rounded-xl bg-yellow-500/10 backdrop-blur-lg border border-yellow-500/20">
+                  <h3 className="text-xl font-semibold text-yellow-500 mb-4 flex items-center gap-2">
+                    <IconBulb className="h-5 w-5" /> Key Learnings
+                  </h3>
+                  <ul className="space-y-2">
+                    {card.learnings?.map((learning, i) => (
+                      <li
+                        key={i}
+                        className="text-white/80 flex items-start gap-2"
+                      >
+                        <span className="text-yellow-500/80 mt-1">💡</span>
+                        {learning}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* Tech Stack */}
+              <div className="mt-8">
+                <h3 className="text-xl font-semibold text-white/90 mb-4">
+                  Tech Stack
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {card.tags?.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-3 py-1 rounded-full text-sm bg-white/10 backdrop-blur-lg border border-white/10 text-white/80"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Achievements */}
+              {card.achievements && (
+                <div className="mt-8">
+                  <h3 className="text-xl font-semibold text-white/90 mb-4">
+                    Key Achievements
+                  </h3>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    {card.achievements.map((achievement, i) => (
+                      <div
+                        key={i}
+                        className="p-4 rounded-xl bg-white/5 backdrop-blur-lg border border-white/10"
+                      >
+                        <p className="text-2xl font-bold text-white">
+                          {achievement.value}
+                        </p>
+                        <p className="text-sm text-white/60">
+                          {achievement.label}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </motion.div>
           </div>
         )}
       </AnimatePresence>
+
+      {/* Preview Card - Existing button code */}
       <motion.button
         onClick={handleOpen}
-        className="rounded-2xl bg-gray-100 dark:bg-neutral-900 h-64 w-48 md:h-72 md:w-64 overflow-hidden flex flex-col items-start justify-start relative z-10"
+        className="rounded-2xl bg-white/10 backdrop-blur-xl border border-white/10 dark:bg-neutral-900/50 h-64 w-48 md:h-72 md:w-64 overflow-hidden flex flex-col items-start justify-start relative z-10"
         transition={{ duration: 0.2 }}
       >
         <div className="absolute h-full top-0 inset-x-0 bg-gradient-to-b from-black/50 via-transparent to-transparent z-30 pointer-events-none" />
@@ -303,3 +439,8 @@ export const BlurImage = ({
     />
   );
 };
+
+function getGoogleDriveEmbedUrl(url: string): string {
+  const fileId = url.match(/[-\w]{25,}/);
+  return fileId ? `https://drive.google.com/file/d/${fileId[0]}/preview` : url;
+}

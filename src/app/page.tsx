@@ -15,7 +15,7 @@ export default function Home() {
         <main className="space-y-12">
           {/* Hero Section with Photo Collage */}
           <section className="min-h-[90vh] grid grid-cols-1 lg:grid-cols-[1fr,1.2fr] gap-12 items-center">
-            <div className="order-2 lg:order-1">
+            <div className="order-2 lg:order-1 relative z-10">
               <div className="h-[120px] mb-1 sm:mb-10">
                 <TypewriterEffect
                   words={[
@@ -24,12 +24,12 @@ export default function Home() {
                     { text: "Andrea", className: "text-gray-900" },
                     { text: ":)", className: "text-gray-900" },
                   ]}
-                  className="text-left !block text-4xl sm:text-4xl md:text-5xl"
+                  className="text-left !block text-5xl sm:text-4xl md:text-5xl"
                   cursorClassName="bg-gray-900"
                 />
               </div>
               <h2 className="text-lg font-medium text-gray-600 mt-4 mb-6">
-                Addicted to building | BSc Student @ Bocconi
+                Addicted to building | BSc @ Bocconi
               </h2>
               <p className="text-lg text-gray-600 max-w-2xl mb-8">
                 I am a 20 y/o student living in Milan, Italy.
@@ -50,7 +50,12 @@ export default function Home() {
             </div>
 
             {/* Photo Collage Grid */}
-            <div id="about" className="order-1 lg:order-2">
+            <div
+              id="about"
+              className="order-1 lg:order-2 relative overflow-hidden"
+            >
+              <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-white/95 via-white/50 to-transparent lg:hidden z-10"></div>
+
               <div className="grid grid-cols-2 gap-4 auto-rows-[120px] sm:auto-rows-[150px] md:auto-rows-[180px]">
                 <div className="row-span-2 relative rounded-2xl overflow-hidden shadow-sm">
                   <Image

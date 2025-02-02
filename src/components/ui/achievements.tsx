@@ -58,7 +58,13 @@ export function AchievementBanner() {
         }
 
         .animate-scroll {
-          animation: scroll 20s linear infinite;
+          animation: scroll 10s linear infinite;
+        }
+
+        @media (max-width: 768px) {
+          .animate-scroll {
+            animation: scroll 8s linear infinite;
+          }
         }
 
         .animate-scroll > div:nth-child(n) {

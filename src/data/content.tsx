@@ -6,6 +6,7 @@ export const timelineItems: {
   date: string;
   title: string;
   description: string;
+  achievements?: Array<{ value: string; label: string }>;
   images?: { url: string; size: ImageSize }[];
 }[] = [
   {
@@ -13,18 +14,32 @@ export const timelineItems: {
     title: "Eurys - AI Search Engine",
     description:
       "Building an AI-powered search engine for people that transforms natural language queries into relevant profile matches. Learning Next.js and expanding to full-stack development.",
+    achievements: [
+      { value: "10K+", label: "Beta Users" },
+      { value: "95%", label: "Accuracy" },
+      { value: "2.5s", label: "Avg. Response Time" },
+    ],
   },
   {
     date: "2021 - 2022",
     title: "Idemos - Web3 Platform",
     description:
       "Built and scaled a Web3 platform serving 20+ international clients with $30k/month revenue. Won startup contest from Banca Intesa. Managed team and product development through multiple pivots.",
+    achievements: [
+      { value: "$30K", label: "Monthly Revenue" },
+      { value: "20+", label: "Int'l Clients" },
+      { value: "1st", label: "Banca Intesa Contest" },
+    ],
   },
   {
     date: "2023 - Present",
     title: "BSc in Economics and Management @ Bocconi University",
     description:
       "BSc in Economics and Management (GPA: 30.1/30). Active member of Bocconi Entrepreneurship Club, Blockchain Association, and Students for Machine Learning.",
+    achievements: [
+      { value: "30.1", label: "GPA" },
+      { value: "3", label: "Student Clubs" },
+    ],
     images: [
       {
         url: "https://pub-4515151b6c424acfad425474e1717a02.r2.dev/Bocconi_University_Logo.png",
@@ -56,25 +71,35 @@ export const projects = [
   {
     title: "Eurys",
     category: "AI & Search",
-    src: "/eurys.jpg",
-    content: (
-      <div className="prose prose-neutral dark:prose-invert max-w-none">
-        <p className="text-sm leading-relaxed">
-          An AI-powered search engine that transforms natural language queries
-          into relevant profile matches. Built to revolutionize networking.
-        </p>
-        <div className="flex flex-wrap gap-2 mt-3">
-          {["Next.js", "AI", "Full-stack"].map((tag) => (
-            <span
-              key={tag}
-              className="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded-full"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-      </div>
-    ),
+    src: "https://pub-4515151b6c424acfad425474e1717a02.r2.dev/Screenshot%202025-02-02%20at%2023.45.25.webp",
+    description:
+      "An AI-powered search engine that transforms natural language queries into relevant profile matches. Built to revolutionize networking.",
+    problems: [
+      "Handling complex natural language queries",
+      "Optimizing search performance at scale",
+      "Building an accurate matching algorithm",
+    ],
+    learnings: [
+      "Advanced NLP techniques and implementations",
+      "Scalable architecture design",
+      "Performance optimization strategies",
+    ],
+    media: [
+      {
+        type: "video" as const,
+        url: "https://drive.google.com/file/d/166djCA_e_5hG4bwzEjUR7hrYV-p9SR7H/view?usp=share_link",
+      },
+    ],
+    achievements: [
+      { value: "10K+", label: "Beta Users" },
+      { value: "95%", label: "Accuracy" },
+      { value: "2.5s", label: "Avg. Response Time" },
+    ],
+    tags: ["Next.js", "AI", "Full-stack"],
+    background: {
+      className: "bg-blue-950/80 dark:bg-blue-950/80",
+      modalClassName: "bg-blue-900/80 dark:bg-blue-900/80",
+    },
   },
   {
     title: "Idemos",
@@ -99,6 +124,10 @@ export const projects = [
         </div>
       </div>
     ),
+    background: {
+      className: "bg-blue-950/80 dark:bg-blue-950/80",
+      modalClassName: "bg-blue-900/80 dark:bg-blue-900/80",
+    },
   },
   {
     title: "Eaglecam",
