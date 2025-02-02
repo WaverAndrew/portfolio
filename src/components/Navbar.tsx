@@ -106,7 +106,7 @@ export default function Navbar() {
       icon: (
         <IconBrandInstagram className="h-full w-full text-neutral-500 hover:text-black transition-all duration-300" />
       ),
-      href: "https://instagram.com/yourusername",
+      href: "https://instagram.com/andre.bonarrigo",
     },
     {
       title: "LinkedIn",
